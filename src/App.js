@@ -1,10 +1,55 @@
+import React from "react";
 import "./styles.css";
 
+const Wizard = ({ children }) => {
+  const [activePage, setActivePage] = React.useState(0);
+  const pages = React.Children.toArray(children);
+  const currentPage = pages[activePage];
+
+  const onPrevClick = () => {
+    setActivePage((index) => index - 1);
+  };
+  const onNextClick = () => {
+    setActivePage((index) => index + 1);
+  };
+
+  return (
+    <div className="wizard">
+      <div className="wizard__content">{currentPage}</div>
+      <div className="wizard__buttons">
+        {activePage > 0 ? (
+          <button
+            onClick={onPrevClick}
+            type="button"
+            className="wizard__buttons-left"
+          >
+            Previous
+          </button>
+        ) : null}
+
+        {activePage < pages.length - 1 ? (
+          <button
+            onClick={onNextClick}
+            type="button"
+            className="wizard__buttons-right"
+          >
+            Next
+          </button>
+        ) : null}
+      </div>
+    </div>
+  );
+};
+
+const Page1 = () => <h1>Page 1</h1>;
+const Page2 = () => <h1>Page 2</h1>;
+const Page3 = () => <h1>Page 3</h1>;
 export default function App() {
   return (
-    <div className="App">
-      <h1>Hello CodeSandbox</h1>
-      <h2>Start editing to see some magic happen!</h2>
-    </div>
+    <Wizard>
+      <Page1 />
+      <Page2 />
+      <Page3 />
+    </Wizard>
   );
 }
